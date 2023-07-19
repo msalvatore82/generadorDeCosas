@@ -1,0 +1,118 @@
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+.titulo{
+  text-align: center;
+  margin-bottom: 20px;
+  color: #05194b;
+  text-shadow: #b3c1e4 1px 1px 0px, #bdc9e7 2px 2px 0px, #bac3dc 3px 3px 0px, #8fa4db 4px 4px 0px, #8ba3df 5px 5px 0px;
+  font-size: 5rem;
+  font-weight: 600;
+
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.container {
+  width: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
+  
+}
+
+.containerEpoch {
+  width: 60%;
+  background-color: #94e296;
+  border-radius: 15px;
+
+
+}
+
+.inputEpoch {
+  line-height: 35px;
+  border-radius: 5px;
+  font-size: 20px;
+  margin-right: 15px;
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+
+.tituloEpoch {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.resultadoEpoch {
+  text-align: center;
+  font-weight: 600;
+  font-size: 25px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  
+}
+
+.contaInpu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.boton {
+  height: 150px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #94e296;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #05194b;
+
+}
+
+
+.resultado {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.botonNombre {
+  width: 100%;
+  height: 150px;
+  padding: 10px 20px;
+  font-size: 25px;
+  background-color: #94e296;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
