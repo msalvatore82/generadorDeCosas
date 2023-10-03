@@ -98,6 +98,7 @@ html {
   margin-bottom: 20px;
   margin-top: 20px;
   text-align: center;
+  height: auto;
 }
 
 .botonNombre {
@@ -115,4 +116,32 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.inputTime[type="time"] {
+  height: 4rem;
+  line-height: 4rem;
+  border-radius: 5px;
+  font-size: 20px;
+  margin-right: 15px;
+  border: none;
+  outline: none;
+  padding: 25px;
+
+}
+
+.botonTime{
+  width: 100%;
+  height: auto;
+  padding: 10px 20px;
+  font-size: 25px;
+  background-color: #94e296;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 15px;
+  /* cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
 }

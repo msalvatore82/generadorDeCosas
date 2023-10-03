@@ -3,6 +3,7 @@ import { useState } from 'react'
 import './App.css'
 import Epoch from './Epoch';
 import MongoId from './MongoId';
+import GoogleTranslator from './GoogleTranslator';
 
 function App() {
   const [cuponAleatorio, setCuponAleatorio] = useState('');
@@ -11,6 +12,13 @@ function App() {
   const [nombreApellido, setNombreApellido] = useState('');
   const [cupsGas, setCupsGas] = useState('');
   const [nie, setNIE] = useState('');
+  const [horaInicio, setHoraInicio] = useState('');
+  const [horaFin, setHoraFin] = useState('');
+  const [diferenciaDeTiempo, setDiferenciaDeTiempo] = useState('');
+  const [horasImputadas, setHorasImputadas] = useState('8'); // Valor predeterminado de 8 horas
+  const [diferenciaHoras, setDiferenciaHoras] = useState('');
+
+
 
 
   function generarCUPSGas() {
@@ -86,35 +94,35 @@ function App() {
     const letrasNIE = 'XYZ';
     return letrasNIE.charAt(resto);
   }
-  
+
   function obtenerLetraNIE(resto) {
     const letrasNIE = 'TRWAGMYFPDXBNJZSQVHLCKE';
     return letrasNIE.charAt(resto);
   }
-  
+
   function obtenerLetraNIE(resto) {
     const letrasNIE = 'TRWAGMYFPDXBNJZSQVHLCKE';
     return letrasNIE.charAt(resto);
   }
-  
+
   function generarNIE() {
     const letrasIniciales = 'XYZ';
     const letraInicial = letrasIniciales.charAt(Math.floor(Math.random() * letrasIniciales.length));
-  
+
     let numeroNIE = '';
     for (let i = 0; i < 7; i++) {
       const randomDigit = Math.floor(Math.random() * 10);
       numeroNIE += randomDigit.toString();
     }
-  
+
     const resto = parseInt(numeroNIE) % 23;
     const letraNIE = obtenerLetraNIE(resto);
-  
+
     const nieGenerado = `${letraInicial}${numeroNIE}${letraNIE}`;
     setNIE(nieGenerado);
   }
-  
-  
+
+
 
   function generarIBAN() {
     const ibanNumeros = Array.from({ length: 22 }, () => Math.floor(Math.random() * 10));
@@ -138,6 +146,58 @@ function App() {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
+  }
+
+
+  function calcularDiferenciaDeTiempo(horaInicio, horaFin) {
+    const horaInicioObj = new Date(`1970-01-01T${horaInicio}`);
+    const horaFinObj = new Date(`1970-01-01T${horaFin}`);
+
+    if (isNaN(horaInicioObj.getTime()) || isNaN(horaFinObj.getTime())) {
+      return 'Formato de hora incorrecto';
+    }
+
+    const diferenciaEnMilisegundos = horaFinObj - horaInicioObj;
+    const minutosTotales = diferenciaEnMilisegundos / (1000 * 60);
+    const horas = Math.floor(minutosTotales / 60);
+    const minutos = Math.floor(minutosTotales % 60);
+
+    const tiempoFormateado = `${horas} horas, ${minutos} minutos`;
+    return tiempoFormateado;
+  }
+
+  function calcularTiempo() {
+    const diferenciaTiempo = calcularDiferenciaDeTiempo(horaInicio, horaFin);
+
+    // Convierte las horas imputadas ingresadas en un número
+    const horasImputadasNumber = parseFloat(horasImputadas);
+
+    // Recalcula minutosTotales aquí
+    const horaInicioObj = new Date(`1970-01-01T${horaInicio}`);
+    const horaFinObj = new Date(`1970-01-01T${horaFin}`);
+    const diferenciaEnMilisegundos = horaFinObj - horaInicioObj;
+    const minutosTotales = diferenciaEnMilisegundos / (1000 * 60);
+
+    // Calcula la diferencia entre las horas imputadas y las horas transcurridas
+    let diferenciaHoras = (minutosTotales / 60) - horasImputadasNumber;
+
+    // Verifica si la diferencia es negativa y ajusta el formato en consecuencia
+    let signo = '';
+    if (diferenciaHoras < 0) {
+      signo = '-';
+      diferenciaHoras = Math.abs(diferenciaHoras);
+    }
+
+    // Convierte la diferencia de horas a horas y minutos
+    const horasDiferencia = Math.floor(diferenciaHoras);
+    const minutosDiferencia = Math.round((diferenciaHoras - horasDiferencia) * 60);
+
+    // Crea una cadena formateada para mostrar la diferencia
+    const diferenciaFormateada = `${signo}${horasDiferencia} horas, ${minutosDiferencia} minutos`;
+
+    // Guarda la diferencia en el estado
+    setDiferenciaDeTiempo(diferenciaTiempo);
+    setDiferenciaHoras(diferenciaFormateada);
   }
 
   return (
@@ -182,12 +242,48 @@ function App() {
           <div className="resultado" title='al hacer click se copia' onClick={() => copiarAlPortapapeles(nombreApellido)}>{nombreApellido}</div>
         </div>
       </div>
+      <div className="botonTime">
+        <h3>Calcular Diferencia de Tiempo</h3>
+        <input
+          className='inputTime'
+          type="time"
+          placeholder="Hora de inicio (HH:MM)"
+          value={horaInicio}
+          onChange={(e) => setHoraInicio(e.target.value)}
+        />
+        <input
+          className='inputTime'
+          type="time"
+          placeholder="Hora de fin (HH:MM)"
+          value={horaFin}
+          onChange={(e) => setHoraFin(e.target.value)}
+        />
+        <input
+               className='inputTime'
+               type="time"
+          placeholder="Horas imputadas"
+          value={horasImputadas}
+          onChange={(e) => setHorasImputadas(e.target.value)}
+        />
+        <button onClick={calcularTiempo}>Calcular</button>
+        {diferenciaDeTiempo && (
+          <div className="resultado">{`Horas desde que fichaste: ${diferenciaDeTiempo}`}</div>
+        )}
+        {diferenciaHoras && (
+          <div className="resultado">{`Diferencia de Horas entre fichaje y imputacion: ${diferenciaHoras}`}</div>
+        )}
+      </div>
       <div>
         <Epoch />
       </div>
       <div>
         <MongoId />
       </div>
+
+      {/* <div>
+        <h1>Traductor de Google</h1>
+        <GoogleTranslator />
+      </div> */}
     </>
   );
 }
