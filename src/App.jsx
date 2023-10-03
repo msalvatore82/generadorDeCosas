@@ -181,6 +181,14 @@ function App() {
     // Calcula la diferencia entre las horas imputadas y las horas transcurridas
     let diferenciaHoras = (minutosTotales / 60) - horasImputadasNumber;
 
+    // Restar siempre 30 minutos (0.5 horas) para el almuerzo
+    diferenciaHoras -= 0.5;
+    
+    // Asegurarte de que la diferenciaHoras no sea negativa
+    if (diferenciaHoras < 0) {
+      signo = '-';
+      diferenciaHoras = Math.abs(diferenciaHoras);
+    }
     // Verifica si la diferencia es negativa y ajusta el formato en consecuencia
     let signo = '';
     if (diferenciaHoras < 0) {
