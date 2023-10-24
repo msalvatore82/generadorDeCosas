@@ -175,7 +175,6 @@ function App() {
 
 function calcularDiferenciaHoras(minutosTotales, horasImputadas) {
     let diferenciaHoras = (minutosTotales / 60) - horasImputadas;
-    diferenciaHoras -= 0.5; // Restar 30 minutos para el almuerzo
 
     let signo = '';
     if (diferenciaHoras < 0) {
