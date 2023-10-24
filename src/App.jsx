@@ -166,47 +166,45 @@ function App() {
     return tiempoFormateado;
   }
 
-  function calcularTiempo() {
-    const diferenciaTiempo = calcularDiferenciaDeTiempo(horaInicio, horaFin);
-
-    // Convierte las horas imputadas ingresadas en un número
-    const horasImputadasNumber = parseFloat(horasImputadas);
-
-    // Recalcula minutosTotales aquí
+  function calcularMinutosTotales(horaInicio, horaFin) {
     const horaInicioObj = new Date(`1970-01-01T${horaInicio}`);
     const horaFinObj = new Date(`1970-01-01T${horaFin}`);
     const diferenciaEnMilisegundos = horaFinObj - horaInicioObj;
-    const minutosTotales = diferenciaEnMilisegundos / (1000 * 60);
+    return diferenciaEnMilisegundos / (1000 * 60);
+}
 
-    // Calcula la diferencia entre las horas imputadas y las horas transcurridas
-    let diferenciaHoras = (minutosTotales / 60) - horasImputadasNumber;
+function calcularDiferenciaHoras(minutosTotales, horasImputadas) {
+    let diferenciaHoras = (minutosTotales / 60) - horasImputadas;
+    diferenciaHoras -= 0.5; // Restar 30 minutos para el almuerzo
 
-    // Restar siempre 30 minutos (0.5 horas) para el almuerzo
-    diferenciaHoras -= 0.5;
-    
-    // Asegurarte de que la diferenciaHoras no sea negativa
-    if (diferenciaHoras < 0) {
-      signo = '-';
-      diferenciaHoras = Math.abs(diferenciaHoras);
-    }
-    // Verifica si la diferencia es negativa y ajusta el formato en consecuencia
     let signo = '';
     if (diferenciaHoras < 0) {
-      signo = '-';
-      diferenciaHoras = Math.abs(diferenciaHoras);
+        signo = '-';
+        diferenciaHoras = Math.abs(diferenciaHoras);
     }
 
-    // Convierte la diferencia de horas a horas y minutos
     const horasDiferencia = Math.floor(diferenciaHoras);
     const minutosDiferencia = Math.round((diferenciaHoras - horasDiferencia) * 60);
 
-    // Crea una cadena formateada para mostrar la diferencia
-    const diferenciaFormateada = `${signo}${horasDiferencia} horas, ${minutosDiferencia} minutos`;
+    return {
+        signo,
+        horasDiferencia,
+        minutosDiferencia,
+    };
+}
 
-    // Guarda la diferencia en el estado
-    setDiferenciaDeTiempo(diferenciaTiempo);
-    setDiferenciaHoras(diferenciaFormateada);
-  }
+function calcularTiempo() {
+  const diferenciaTiempo = calcularDiferenciaDeTiempo(horaInicio, horaFin);
+  const minutosTotales = calcularMinutosTotales(horaInicio, horaFin);
+  const horasImputadasNumber = parseFloat(horasImputadas);
+  
+  const { signo, horasDiferencia, minutosDiferencia } = calcularDiferenciaHoras(minutosTotales, horasImputadasNumber);
+
+  const diferenciaFormateada = `${signo}${horasDiferencia} horas, ${minutosDiferencia} minutos`;
+
+  setDiferenciaDeTiempo(diferenciaTiempo);
+  setDiferenciaHoras(diferenciaFormateada);
+}
 
   return (
     <>
